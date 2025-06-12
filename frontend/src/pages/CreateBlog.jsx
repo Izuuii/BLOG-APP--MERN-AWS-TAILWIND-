@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createPost } from '../api'
 
@@ -9,7 +9,13 @@ const CreateBlog = () => {
     const [showToast, setShowToast] = useState(false)
     const [errorToast, setErrorToast] = useState(false)
     const [file, setFile] = useState()
+
+    const MAX_FILE_SIZE = 15000000
+
+    const inputFile = useRef(null)
+
     const navigate = useNavigate()
+
 
     async function handleSubmit(e) {
         e.preventDefault()
@@ -38,6 +44,25 @@ const CreateBlog = () => {
                 setErrorToast(false)
             }, 3000)
         }
+    }
+
+    function handleFileUpload(e){
+        const file = e.target.files[0]
+
+        const fileExtension = file.name.substring(file.name.lastIndexOf('.'))
+
+        if (fileExtension != ".jpg" && fileExtension != ".jpeg" && fileExtension != ".png"){
+            alert("Files must be jpg or png")
+            inputFile.current.value = ""
+            inputFile.current.type = "file"
+            return
+        }
+        if (file.size > MAX_FILE_SIZE){
+            alert("File size exceeds the limit (15mb)")
+            inputFile.current.value = ""
+            inputFile.current.type = "file"
+        }
+        setFile(file)
     }
 
     return (
@@ -79,7 +104,7 @@ const CreateBlog = () => {
                 />
 
                 <label className="block mb-2 text-sm font-medium">Insert Image</label>
-                <input type="file" />
+                <input type="file" onChange={handleFileUpload} ref={inputFile} required />
 
                 <div className="flex justify-end mt-4">
                     <button
