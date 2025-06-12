@@ -6,7 +6,10 @@ require("dotenv").config({path: "./config.env"})
 
 const { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
 
+
+
 let awsRoutes = express.Router()
+const s3Bucket = "storageblog1"
 
 const s3Client = new S3Client({
     region: "ap-southeast-2",
@@ -18,33 +21,34 @@ const s3Client = new S3Client({
 
 //#1 Retrieve One
 awsRoutes.route("/images/:id").get(verifyToken, async(request, response) =>  {
-    let db = database.getDb()
-    let data = await db.collection("posts").findOne({_id: new ObjectId(request.params.id)})
-    if(data && Object.keys(data).length > 0) {
-        response.json(data)
-    } else {
-        response.status(404).json({ error: "Data was not found :" })
+    
+    const id = request.params.id
+    const bucketParams = {
+        Bucket: s3Bucket,
+        Key: id,
     }
+
+    const data = await s3Client.send(new GetObjectCommand(bucketParams))
+
+    const contentType = data.ContentType
+    const srcString = data.Body.transformToString('base64');
+    const imageSource = `data:${contentType};base64,${srcString}`;
+
+    response.json(imageSource)
 })
 
 //#2 Create One
 awsRoutes.route("/images").post(verifyToken, async(request, response) =>  {
-    let db = database.getDb()
-    let mongoObject = {
-        title: request.body.title,
-        description: request.body.description,
-        content: request.body.content,
-        author: request.user._id, // Use user ID from token
-        dateCreated: request.body.dateCreated,
-    }
-    let data = await db.collection("posts").insertOne(mongoObject)
-    response.json(data)
-})
 
-//#3 Delete One
-awsRoutes.route("/images/:id").delete(verifyToken, async(request, response) =>  {
-    let db = database.getDb()
-    let data = await db.collection("posts").deleteOne({_id: new ObjectId(request.params.id)})
+    const file = request.body
+    const bucketParams = {
+        Bucket: s3Bucket,
+        Key: file.name,
+        Body: file
+    }
+
+    const data = await s3Client.send(new PutObjectCommand(bucketParams))
+
     response.json(data)
 })
 
