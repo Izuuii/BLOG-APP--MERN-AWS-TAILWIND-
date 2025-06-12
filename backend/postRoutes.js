@@ -37,6 +37,7 @@ postRoutes.route("/posts").post(verifyToken, async(request, response) =>  {
         content: request.body.content,
         author: request.user._id, // Use user ID from token
         dateCreated: request.body.dateCreated,
+        imageId: request.body.imageId, 
     }
     let data = await db.collection("posts").insertOne(mongoObject)
     response.json(data)
@@ -52,6 +53,7 @@ postRoutes.route("/posts/:id").put(verifyToken, async(request, response) =>  {
             content: request.body.content,
             author: request.user._id, // Use user ID from token
             dateCreated: request.body.dateCreated,
+            imageId: request.body.imageId, 
         }
     }
     let data = await db.collection("posts").updateOne({_id: new ObjectId(request.params.id)}, mongoObject)

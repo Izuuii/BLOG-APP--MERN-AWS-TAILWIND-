@@ -8,6 +8,7 @@ const CreateBlog = () => {
     const [content, setContent] = useState('')
     const [showToast, setShowToast] = useState(false)
     const [errorToast, setErrorToast] = useState(false)
+    const [file, setFile] = useState()
     const navigate = useNavigate()
 
     async function handleSubmit(e) {
@@ -18,7 +19,8 @@ const CreateBlog = () => {
             description,
             content,
             author: null,
-            dateCreated: new Date()
+            dateCreated: new Date(),
+            file: file
         }
 
         try {
@@ -75,6 +77,9 @@ const CreateBlog = () => {
                     name="content"
                     rows={4}
                 />
+
+                <label className="block mb-2 text-sm font-medium">Insert Image</label>
+                <input type="file" />
 
                 <div className="flex justify-end mt-4">
                     <button

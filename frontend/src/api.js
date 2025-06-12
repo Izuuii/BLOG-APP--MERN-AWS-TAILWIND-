@@ -15,17 +15,24 @@ export async function getPosts() {
 export async function getPost(id) {
     // Assuming you want to fetch a specific post by ID
     // http://localhost:3000/posts/12345
+
     const response = await axios.get(`${URL}/posts/${id}`); 
 
-    if (response.status === 200) {
-        return response.data;
-    } else {
-        throw new Error('Error fetching post: ' + response.statusText);
-    }
+    const post = response.data
+    const data = await getImage(post.imageId);
+    post.image = data
+    return post
+
 }
 
 export async function createPost(post) {
     // http://localhost:3000/posts
+
+    const data = await createImage(post.file)
+    const imageId = data.data.VersionId; 
+
+    post.imageId = imageId; 
+
     const response = await axios.post(`${URL}/posts`, post); 
 
     if (response.status === 200) {
@@ -95,7 +102,7 @@ export async function verifyUser(user) {
 export async function createImage(file){
     const formData = new FormData();
     formData.append('image', file);
-    const response = await axios.post(`${URL}/images`, formData{
+    const response = await axios.post(`${URL}/images`, formData,{
         headers: {
             'Content-Type': 'multipart/form-data'
         }
