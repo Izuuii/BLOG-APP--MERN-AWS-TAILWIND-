@@ -41,10 +41,11 @@ awsRoutes.route("/images/:id").get(verifyToken, async(request, response) =>  {
 awsRoutes.route("/images").post(verifyToken, async(request, response) =>  {
 
     const file = request.files[0]
+    console.log(file)
     const bucketParams = {
         Bucket: s3Bucket,
-        Key: file.name,
-        Body: file
+        Key: file.originalname,
+        Body: file.buffer  
     }
 
     const data = await s3Client.send(new PutObjectCommand(bucketParams))

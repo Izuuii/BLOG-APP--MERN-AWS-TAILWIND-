@@ -29,7 +29,7 @@ export async function createPost(post) {
     // http://localhost:3000/posts
 
     const data = await createImage(post.file)
-    const imageId = data.data.VersionId; 
+    const imageId = post.file.name; 
 
     post.imageId = imageId; 
 
