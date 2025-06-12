@@ -40,7 +40,7 @@ awsRoutes.route("/images/:id").get(verifyToken, async(request, response) =>  {
 //#2 Create One
 awsRoutes.route("/images").post(verifyToken, async(request, response) =>  {
 
-    const file = request.body
+    const file = request.files[0]
     const bucketParams = {
         Bucket: s3Bucket,
         Key: file.name,

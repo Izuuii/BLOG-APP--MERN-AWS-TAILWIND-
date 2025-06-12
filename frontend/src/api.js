@@ -91,3 +91,19 @@ export async function verifyUser(user) {
         throw new Error(response.data.message || 'Error verifying user');
     }
 }
+
+export async function createImage(file){
+    const formData = new FormData();
+    formData.append('image', file);
+    const response = await axios.post(`${URL}/images`, formData{
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
+    return response
+}
+
+export async function getImage(id){
+    const response = await axios.get(`${URL}/images/${id}`) 
+    return response
+} 
