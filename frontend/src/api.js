@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const URL = 'http://localhost:3000';
+const BASE_API_URL = 'http://localhost:3000';
+const S3_URL = 'https://storageblog1.s3.ap-southeast-2.amazonaws.com';
 
 export async function getPosts() {
-    // http://localhost:3000/posts
-    const response = await axios.get(`${URL}/posts`); 
+    const response = await axios.get(`${BASE_API_URL}/posts`);
     if (response.status === 200) {
         return response.data;
     } else {
@@ -13,28 +13,22 @@ export async function getPosts() {
 }
 
 export async function getPost(id) {
-    // Assuming you want to fetch a specific post by ID
-    // http://localhost:3000/posts/12345
+    const response = await axios.get(`${BASE_API_URL}/posts/${id}`);
+    const post = response.data;
 
-    const response = await axios.get(`${URL}/posts/${id}`); 
+    // Use direct S3 URL construction
+    post.imageUrl = `${S3_URL}/${post.imageId}`;
 
-    const post = response.data
-    const data = await getImage(post.imageId);
-    post.image = data
-    return post
-
+    return post;
 }
 
 export async function createPost(post) {
-    // http://localhost:3000/posts
+    const data = await createImage(post.file);
+    const imageId = post.file.name;
 
-    const data = await createImage(post.file)
-    const imageId = post.file.name; 
+    post.imageId = imageId;
 
-    post.imageId = imageId; 
-
-    const response = await axios.post(`${URL}/posts`, post); 
-
+    const response = await axios.post(`${BASE_API_URL}/posts`, post);
     if (response.status === 200) {
         return response.data;
     } else {
@@ -43,9 +37,7 @@ export async function createPost(post) {
 }
 
 export async function updatePost(id, post) {
-        // http://localhost:3000/posts/12345
-    const response = await axios.put(`${URL}/posts/${id}`, post); 
-
+    const response = await axios.put(`${BASE_API_URL}/posts/${id}`, post);
     if (response.status === 200) {
         return response.data;
     } else {
@@ -54,9 +46,7 @@ export async function updatePost(id, post) {
 }
 
 export async function deletePost(id) {
-    // http://localhost:3000/posts/12345
-    const response = await axios.delete(`${URL}/posts/${id}`); 
-
+    const response = await axios.delete(`${BASE_API_URL}/posts/${id}`);
     if (response.status === 200) {
         return response.data;
     } else {
@@ -64,53 +54,50 @@ export async function deletePost(id) {
     }
 }
 
-
-//users
+// User functions
 export async function getUser(id) {
-    // Assuming you want to fetch a specific post by ID
-    // http://localhost:3000/users/12345
-    const response = await axios.get(`${URL}/users/${id}`); 
-
+    const response = await axios.get(`${BASE_API_URL}/users/${id}`);
     if (response.status === 200) {
         return response.data;
     } else {
-        return
+        return;
     }
 }
 
 export async function createUser(user) {
-    // http://localhost:3000/users
-    const response = await axios.post(`${URL}/users`, user); 
+    const response = await axios.post(`${BASE_API_URL}/users`, user);
     return response.data;
 }
 
 export async function updateUser(id, user) {
-    // http://localhost:3000/users/12345
-    const response = await axios.put(`${URL}/users/${id}`, user); 
+    const response = await axios.put(`${BASE_API_URL}/users/${id}`, user);
     return response.data;
 }
 
 export async function verifyUser(user) {
-    const response = await axios.post(`${URL}/users/login`, user);
+    const response = await axios.post(`${BASE_API_URL}/users/login`, user);
     if (response.data.success) {
-        return response.data; // Return the actual data
+        return response.data;
     } else {
         throw new Error(response.data.message || 'Error verifying user');
     }
 }
 
-export async function createImage(file){
+// Image Upload
+export async function createImage(file) {
     const formData = new FormData();
     formData.append('image', file);
-    const response = await axios.post(`${URL}/images`, formData,{
+
+    const response = await axios.post(`${BASE_API_URL}/images`, formData, {
         headers: {
             'Content-Type': 'multipart/form-data'
         }
     });
-    return response
+
+    return response;
 }
 
-export async function getImage(id){
-    const response = await axios.get(`${URL}/images/${id}`) 
-    return response
-} 
+export async function getImage(id) {
+    // Deprecated if you're using direct S3 URLs
+    return `${S3_URL}/${id}`;
+}
