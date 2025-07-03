@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const BASE_API_URL = 'http://localhost:3000';
-const S3_URL = 'https://storageblog1.s3.ap-southeast-2.amazonaws.com';
+const BASE_API_URL = import.meta.env.VITE_BASE_API_URL;
+const S3_URL = import.meta.env.VITE_S3_URL;
 
 export async function getPosts() {
     const response = await axios.get(`${BASE_API_URL}/posts`);
