@@ -13,8 +13,8 @@ const s3Bucket = "storageblog1"
 const s3Client = new S3Client({
     region: "ap-southeast-2",
     credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY,
-        secretAccessKey: process.env.AWS_SECRET_KEY
+        accessKeyId: process.env.MY_AWS_ACCESS_KEY,
+        secretAccessKey: process.env.MY_AWS_SECRET_KEY
     }
 })
 

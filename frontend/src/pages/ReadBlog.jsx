@@ -54,7 +54,7 @@ const Readblog = () => {
             <img
             src={post.imageUrl}
             alt="Post image"
-            className="mb-4 max-w-full rounded shadow-lg"
+            className="mb-4 max-w-screen-md rounded shadow-lg"
             onError={(e) => {
                 console.error('Image failed to load:', e);
                 e.target.style.display = 'none';
