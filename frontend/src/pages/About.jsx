@@ -28,6 +28,7 @@ const About = () => {
                 <li><strong>Express.js</strong> – Backend API handling</li>
                 <li><strong>React.js</strong> – Frontend UI and component logic</li>
                 <li><strong>Node.js</strong> – Server-side JavaScript runtime</li>
+                <li><strong>AWS S3</strong> – For Image storage</li>
                 <li><strong>Tailwind CSS</strong> – For clean and responsive styling</li>
                 <li><strong>React Router</strong> – For client-side navigation</li>
             </ul>
