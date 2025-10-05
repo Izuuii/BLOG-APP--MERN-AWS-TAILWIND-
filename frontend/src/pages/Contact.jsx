@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Mail, Send, ArrowLeft, Check } from 'lucide-react';
 
 const Contact = () => {
     const [name, setName] = useState('');
@@ -19,94 +20,128 @@ const Contact = () => {
 
         // After 3 seconds, hide toast and navigate to home page
         setTimeout(() => {
-        setShowToast(false);
-        navigate('/home');
+            setShowToast(false);
+            navigate('/home');
         }, 3000);
     }
 
     return (
-        <div className="flex justify-center py-10 relative px-10">
-        <form
-            onSubmit={handleSubmit}
-            className="w-full max-w-xl bg-gray-900 text-white p-6 rounded-lg border border-gray-700"
-        >
-            <h2 className="text-2xl font-semibold mb-2">Contact Us</h2>
-            <p className="mb-6 text-gray-400 text-sm">
-            Have questions or feedback? Fill out the form below and we’ll get back to you as soon as possible.
-            </p>
-
-            <label htmlFor="name" className="block mb-2 text-sm font-medium">
-            Name
-            </label>
-            <input
-            id="name"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            className="mb-4 w-full p-2.5 rounded-lg border border-gray-600 bg-gray-800 text-white focus:ring-blue-500 focus:border-blue-500"
-            maxLength={100}
-            placeholder="Your full name"
-            />
-
-            <label htmlFor="email" className="block mb-2 text-sm font-medium">
-            Email
-            </label>
-            <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="mb-4 w-full p-2.5 rounded-lg border border-gray-600 bg-gray-800 text-white focus:ring-blue-500 focus:border-blue-500"
-            maxLength={100}
-            placeholder="your.email@example.com"
-            />
-
-            <label htmlFor="message" className="block mb-2 text-sm font-medium">
-            Message
-            </label>
-            <textarea
-            id="message"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            required
-            rows={5}
-            maxLength={2000}
-            placeholder="Write your message here..."
-            className="mb-4 w-full p-2.5 rounded-lg border border-gray-600 bg-gray-800 text-white focus:ring-blue-500 focus:border-blue-500 resize-none"
-            />
-
-            <button
-            type="submit"
-            className="bg-gray-800 hover:bg-gray-700 text-white font-medium rounded-lg px-6 py-2.5 focus:ring-4 focus:ring-blue-500"
-            >
-            Send Message
-            </button>
-        </form>
-
-        {showToast && (
-            <div
-            id="toast-simple"
-            className="fixed top-5 right-5 flex items-center w-full max-w-xs p-4 space-x-4 rtl:space-x-reverse text-gray-500 bg-white divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow-sm dark:text-gray-400 dark:divide-gray-700 dark:bg-gray-800"
-            role="alert"
-            >
-            <svg
-                className="w-5 h-5 text-blue-600 dark:text-blue-500 rotate-45"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 18 20"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                stroke="currentColor"
-            >
-                <path d="m9 17 8 2L9 1 1 19l8-2Zm0 0V9" />
-            </svg>
-            <div className="ps-4 text-sm font-normal">Message sent successfully.</div>
+        <div className="min-h-screen bg-black">
+            {/* Header */}
+            <div className="sticky top-0 z-10 bg-black/80 backdrop-blur-md border-b border-gray-800">
+                <div className="max-w-2xl mx-auto px-4 py-4">
+                    <div className="flex items-center justify-between">
+                        <button
+                            onClick={() => navigate(-1)}
+                            className="flex items-center space-x-2 text-white hover:text-gray-300 transition-colors"
+                        >
+                            <ArrowLeft size={20} />
+                            <span>Back</span>
+                        </button>
+                        <h1 className="text-xl font-semibold text-white">Contact</h1>
+                        <div className="w-20"></div> {/* Spacer for centering */}
+                    </div>
+                </div>
             </div>
-        )}
+
+            <div className="max-w-2xl mx-auto px-4 py-8">
+                {/* Hero Section */}
+                <div className="text-center mb-8">
+                    <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <Mail size={24} className="text-white" />
+                    </div>
+                    <h2 className="text-3xl font-bold text-white mb-4">Get in Touch</h2>
+                    <p className="text-gray-300 leading-relaxed">
+                        Have questions, feedback, or just want to say hello? I'd love to hear from you!
+                    </p>
+                </div>
+
+                {/* Contact Form */}
+                <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="space-y-2">
+                        <label htmlFor="name" className="block text-sm font-medium text-white">
+                            Name
+                        </label>
+                        <input
+                            id="name"
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                            className="w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400"
+                            maxLength={100}
+                            placeholder="Your full name"
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        <label htmlFor="email" className="block text-sm font-medium text-white">
+                            Email
+                        </label>
+                        <input
+                            id="email"
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            className="w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400"
+                            maxLength={100}
+                            placeholder="your.email@example.com"
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        <label htmlFor="message" className="block text-sm font-medium text-white">
+                            Message
+                        </label>
+                        <textarea
+                            id="message"
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                            required
+                            rows={6}
+                            maxLength={2000}
+                            placeholder="Tell me what's on your mind..."
+                            className="w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none placeholder-gray-400"
+                        />
+                        <p className="text-xs text-gray-400">{message.length}/2000</p>
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl py-3 transition-colors focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-black flex items-center justify-center space-x-2"
+                    >
+                        <Send size={20} />
+                        <span>Send Message</span>
+                    </button>
+                </form>
+
+                {/* Additional Info */}
+                <div className="mt-12 text-center">
+                    <div className="bg-gray-900 rounded-2xl p-6 border border-gray-800">
+                        <h3 className="text-lg font-semibold text-white mb-3">Other Ways to Connect</h3>
+                        <p className="text-gray-300 text-sm mb-4">
+                            This is a learning project built to practice the MERN stack. Your feedback helps me improve!
+                        </p>
+                        <div className="flex justify-center space-x-4">
+                            <div className="text-center">
+                                <div className="w-12 h-12 bg-gray-800 rounded-xl flex items-center justify-center mx-auto mb-2">
+                                    <Mail size={16} className="text-gray-400" />
+                                </div>
+                                <span className="text-xs text-gray-400">Response in 24h</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Success Toast */}
+            {showToast && (
+                <div className="fixed top-4 right-4 z-50 flex items-center p-4 bg-green-900/90 text-green-100 rounded-xl shadow-lg backdrop-blur-sm">
+                    <Check size={20} className="mr-3" />
+                    <span className="font-medium">Message sent successfully!</span>
+                </div>
+            )}
         </div>
     );
 };
